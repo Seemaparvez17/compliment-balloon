@@ -41,16 +41,24 @@ const ComplimentBalloon = () => {
             role: "user",
             content: `Someone described their relationship to the person sending them this as: "${relationshipDesc}"
 
-Generate exactly 6 genuine, clever compliments that fit this specific relationship context. Make them:
-- Contextually appropriate and smart (reference the relationship type if it's unique/funny)
-- Warm and authentic (not generic)
-- A mix of sweet and playful
-- Each 8-15 words max
-- No quotation marks
-- If it's a weird/unique relationship, embrace that humor
+Generate exactly 6 UNIQUE, genuine compliments that fit this relationship. IMPORTANT:
+- If it's a formal/professional relationship (professor, boss, mentor, teacher): Be respectful, professional, acknowledge their impact
+- If it's family (mom, dad, sibling, grandparent): Be warm, loving, acknowledge the special bond
+- If it's romantic (crush, partner, boyfriend, girlfriend): Be sweet, flirty but not creepy
+- If it's casual (friend, acquaintance): Be friendly and genuine
+- If it's unique/funny: Embrace the humor while being sincere
 
-Return ONLY a JSON array of strings, nothing else. Example:
-["compliment 1", "compliment 2", ...]`
+Each compliment should be:
+- DIFFERENT from each other (vary the tone, focus, style)
+- Contextually appropriate (match the formality/intimacy level)
+- 8-15 words max
+- No quotation marks
+- Personal and specific to the relationship type
+
+Generate FRESH compliments - don't reuse generic phrases. Make each one unique.
+
+Return ONLY a JSON array of 6 strings:
+["compliment 1", "compliment 2", "compliment 3", "compliment 4", "compliment 5", "compliment 6"]`
           }],
         })
       });
@@ -63,14 +71,20 @@ Return ONLY a JSON array of strings, nothing else. Example:
       setStep('pop');
     } catch (error) {
       console.error('Error:', error);
-      const fallbacks = {
+      
+      // Randomized fallbacks - pick 6 random from larger pool
+      const allFallbacks = {
         'crush': [
           "Your smile genuinely makes my day better",
           "You're somehow both adorable and incredibly cool",
           "I love how passionate you are about things",
           "Your energy is actually contagious in the best way",
           "You make even boring things feel fun",
-          "I think you're pretty wonderful, just saying"
+          "I think you're pretty wonderful, just saying",
+          "You have the best laugh honestly",
+          "The way you light up talking about what you love",
+          "You're kind of impossible not to think about",
+          "You make everything feel like an adventure"
         ],
         'best friend': [
           "You're the most loyal person I know",
@@ -78,7 +92,11 @@ Return ONLY a JSON array of strings, nothing else. Example:
           "You get me in a way most people don't",
           "Life is genuinely better with you in it",
           "You're the person I want to tell everything to",
-          "Thanks for being consistently amazing"
+          "Thanks for being consistently amazing",
+          "You make the boring stuff fun somehow",
+          "I can be my weirdest self around you",
+          "You've had my back through everything",
+          "Our inside jokes are top tier"
         ],
         'friend': [
           "You're such a genuinely good person",
@@ -86,7 +104,11 @@ Return ONLY a JSON array of strings, nothing else. Example:
           "You make everyone around you feel comfortable",
           "I really appreciate how real you are",
           "You're so much fun to be around",
-          "Glad we're friends honestly"
+          "Glad we're friends honestly",
+          "You bring such good energy everywhere",
+          "You're one of the most thoughtful people I know",
+          "Your perspective on things is always interesting",
+          "You make any group better just by being there"
         ],
         'person I know': [
           "You seem like a really solid person",
@@ -94,10 +116,18 @@ Return ONLY a JSON array of strings, nothing else. Example:
           "I respect how you carry yourself",
           "You're pretty cool from what I've seen",
           "You have good taste in things",
-          "Keep doing your thing, it's working"
+          "Keep doing your thing, it's working",
+          "You've got a good presence about you",
+          "I appreciate the way you show up",
+          "You seem genuinely kind and thoughtful",
+          "The vibe you bring is always welcome"
         ]
       };
-      setCompliments(fallbacks[relationshipType] || fallbacks['friend']);
+      
+      const pool = allFallbacks[relationshipType] || allFallbacks['friend'];
+      // Shuffle and pick 6
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      setCompliments(shuffled.slice(0, 6));
       setStep('pop');
     }
   };
